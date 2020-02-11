@@ -165,6 +165,68 @@ if(httpResponse.StatusCode == 503)
 }
 ```
 
+### IgnoreFailure
+
+If all attempts fail, it will not throw the last exception or return the last value, instead it will return the default value of the type of the function.
+
+```cs
+int number = Retry.It(() => SomeService.CalculateSomethingThatReturnsInt())
+     .WhenExceptionMessageContains("timeout")
+     .Times(3)
+     .IngoreFailure()
+     .Go();
+
+Console.WriteLine(number); // prints zero (default for int) if all attempts fail
+```
+
+It is also possible to specify the default value to return in case all attempts fail.
+
+```cs
+int number = Retry.It(() => SomeService.CalculateSomethingThatReturnsInt())
+     .WhenExceptionMessageContains("timeout")
+     .Times(3)
+     .IngoreFailure(5)
+     .Go();
+
+Console.WriteLine(number); // prints 5 if all attempts fail
+```
+
+### OnFailure
+
+Allows you to run code when all attempts fail. The function will receive as parameteres the result and the exception (if any was thrown).
+
+```cs
+Retry.It(() => SomeRepository.Save(data))
+     .WhenExceptionMessageContains("timeout")
+     .Times(3)
+     .OnFailure((r,e) => Console.WriteLine("All attempts have failed. The exception message is: {0}", e.Message))
+     .Go();
+```
+
+### BeforeRetry
+
+Allows you to run code **before** each attempt.
+
+```cs
+Retry.It(() => SomeRepository.Save(data))
+     .WhenExceptionMessageContains("timeout")
+     .Times(3)
+     .BeforeRetry(() => Log.Warn("Retrying..."))
+     .Go();
+```
+
+### AfterRetry
+
+Allows you to run code **after** each attempt. The function will receive as parameteres the result and the exception (if any was thrown).
+
+```cs
+Retry.It(() => SomeRepository.Save(data))
+     .WhenExceptionMessageContains("timeout")
+     .Times(3)
+     .AfterRetry((r,e) => Log.WarnFormat("Retrying... The exception is {0}", e.Message))
+     .Go();
+```
+
 ### Go
 
 Well, it goes.
