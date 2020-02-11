@@ -230,3 +230,8 @@ Retry.It(() => SomeRepository.Save(data))
 ### Go
 
 Well, it goes.
+
+## ToDo's
+
+* More "Delay" options like Random and Exponential that are useful when dealing with REST services;
+* Support async stuff.
