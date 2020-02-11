@@ -5,14 +5,25 @@
     <Authors>Fernando Auresco</Authors>
     <Description>Library to effortlessly implement retry logic into your .net applications.</Description>
     <Copyright>2020 Fernando Auresco</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/fauresco/retryit</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/fauresco/retryit</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>retry</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/fauresco/retryit/master/art/logo.png</PackageIconUrl>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+  <PropertyGroup>
     <DocumentationFile>D:\Github\RetryIt\FAuresco.RetryIt\FAuresco.RetryIt.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <DocumentationFile>D:\Github\RetryIt\FAuresco.RetryIt\FAuresco.RetryIt.xml</DocumentationFile>
-  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
