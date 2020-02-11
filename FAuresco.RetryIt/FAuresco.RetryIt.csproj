@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net45;net40</TargetFrameworks>
+    <Authors>Fernando Auresco</Authors>
+    <Description>Library to effortlessly implement retry logic into your .net applications.</Description>
+    <Copyright>2020 Fernando Auresco</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>D:\Github\RetryIt\FAuresco.RetryIt\FAuresco.RetryIt.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DocumentationFile>D:\Github\RetryIt\FAuresco.RetryIt\FAuresco.RetryIt.xml</DocumentationFile>
+  </PropertyGroup>
+
+</Project>

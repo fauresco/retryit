@@ -1,0 +1,255 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FAuresco.RetryIt</name>
+    </assembly>
+    <members>
+        <member name="T:FAuresco.RetryIt.IRetryStrategy`1">
+            <summary>
+            Retry strategy.
+            </summary>
+        </member>
+        <member name="M:FAuresco.RetryIt.IRetryStrategy`1.MustRetry(`0,System.Exception)">
+            <summary>
+            Runs retry strategy and tells the executor if it must retry or not.
+            </summary>
+            <typeparam name="TResult">The type of the result.</typeparam>
+            <param name="result">The result of the function/code.</param>
+            <param name="ex">The exception in case of any errors.</param>
+            <returns>True if the executor must retry.</returns>
+        </member>
+        <member name="T:FAuresco.RetryIt.Retry">
+            <summary>
+            Allows you to retry code using a fluent API.
+            </summary>
+        </member>
+        <member name="M:FAuresco.RetryIt.Retry.It``1(System.Func{``0})">
+            <summary>
+            The function you want to execute.
+            </summary>
+            <typeparam name="TResult">Type of the result of the function.</typeparam>
+            <param name="func">The function you want to execute.</param>
+            <returns>A <see cref="!:RetryCondition&lt;TResult&gt;"/> object that allows you to specify when you want to retry the function.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.Retry.It(System.Action)">
+            <summary>
+            The code you want to execute.
+            </summary>
+            <param name="action">The code you want to execute.</param>
+            <returns>A <see cref="!:RetryCondition&lt;TResult&gt;"/> object that allows you to specify when you want to retry the code.</returns>
+        </member>
+        <member name="T:FAuresco.RetryIt.RetryDefinition`1">
+            <summary>
+            Holds the necessary parameters to execute the function/action and execute the retry logic.
+            </summary>
+            <typeparam name="TResult">Type of the result.</typeparam>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinition`1.#ctor">
+            <summary>
+            Holds the necessary parameters to execute the function/action and execute the retry logic.
+            </summary>
+        </member>
+        <member name="P:FAuresco.RetryIt.RetryDefinition`1.TheFunction">
+            <summary>
+            The function that will be executed.
+            </summary>
+        </member>
+        <member name="P:FAuresco.RetryIt.RetryDefinition`1.RetryStrategies">
+            <summary>
+            A list of retry strategies to be checked.
+            </summary>
+        </member>
+        <member name="P:FAuresco.RetryIt.RetryDefinition`1.Times">
+            <summary>
+            How many times we are going to retry in case of any retry strategy tells to retry.
+            </summary>
+        </member>
+        <member name="P:FAuresco.RetryIt.RetryDefinition`1.Delay">
+            <summary>
+            The delay (in miliseconds) between each retry.
+            </summary>
+        </member>
+        <member name="P:FAuresco.RetryIt.RetryDefinition`1.OnFailure">
+            <summary>
+            Code to run when all attempts fail.
+            </summary>
+        </member>
+        <member name="P:FAuresco.RetryIt.RetryDefinition`1.OnBeforeRetry">
+            <summary>
+            Code to run before each retry.
+            </summary>
+        </member>
+        <member name="P:FAuresco.RetryIt.RetryDefinition`1.OnAfterRetry">
+            <summary>
+            Code to run after each retry.
+            </summary>
+        </member>
+        <member name="P:FAuresco.RetryIt.RetryDefinition`1.IgnoreFailure">
+            <summary>
+            When true and all attempts fail, returns default result value instead of last value or exception.
+            </summary>
+        </member>
+        <member name="P:FAuresco.RetryIt.RetryDefinition`1.IgnoreFailureDefault">
+            <summary>
+            When set and all attempts fail, this value is used to provide a default value to the caller instead of the last value or last exception.
+            </summary>
+        </member>
+        <member name="T:FAuresco.RetryIt.RetryDefinitionBuilder`1">
+            <summary>
+            Contains methods to fill in the properties of the <see cref="T:FAuresco.RetryIt.RetryDefinition`1"/> class as well as the method Go which is used to execute the definition.
+            </summary>
+            <typeparam name="TResult">Type of the result.</typeparam>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.#ctor(System.Func{`0})">
+            <summary>
+            Contains methods to fill in the properties of the <see cref="T:FAuresco.RetryIt.RetryDefinition`1"/> class as well as the method Go which is used to execute the definition.
+            </summary>
+            <param name="func">The function that will be executed.</param>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.WhenExceptionMessageContains(System.String)">
+            <summary>
+            Retry when the exception message contains specific message. It recusively searches the exception message of the inner exceptions, if any.
+            </summary>
+            <param name="message">The message to search.</param>
+            <returns>Returns this instance of <see cref="T:FAuresco.RetryIt.RetryDefinitionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.WhenExceptionTypeIs(System.Type)">
+            <summary>
+            Retry when the exception is of specific type.
+            </summary>
+            <param name="exceptionType">Type of the exception.</param>
+            <returns>Returns this instance of <see cref="T:FAuresco.RetryIt.RetryDefinitionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.WhenCustom(System.Func{`0,System.Exception,System.Boolean})">
+            <summary>
+            Retry when the provided custom function returns true.
+            </summary>
+            <param name="customFunction">A custom function that will receive the result of the original function and an exception (in case one was thrown). It must return true to trigger the retry.</param>
+            <returns>Returns this instance of <see cref="T:FAuresco.RetryIt.RetryDefinitionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.WhenCustomStrategy(FAuresco.RetryIt.IRetryStrategy{`0})">
+            <summary>
+            Retry when provided custom retry strategy returns true.
+            </summary>
+            <param name="customStrategy">A custom retry strategy implementation of <see cref="T:FAuresco.RetryIt.IRetryStrategy`1"/>.</param>
+            <returns>Returns this instance of <see cref="T:FAuresco.RetryIt.RetryDefinitionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.Times(System.Int32)">
+            <summary>
+            Set how many times the function will be executed in case of failure. So if you set a value of 50, the function will be executed one time + 50 at maximum.
+            </summary>
+            <param name="times">How many times to retry.</param>
+            <returns>Returns this instance of <see cref="T:FAuresco.RetryIt.RetryDefinitionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.Delay(System.Int32)">
+            <summary>
+            Sets a delay between retries (in miliseconds). This is useful, for instance, when you hit a database timeout error and want to wait a little bit to give time to the server finish whathever it was doing.
+            </summary>
+            <param name="ms">The number of miliseconds to wait.</param>
+            <returns>Returns this instance of <see cref="T:FAuresco.RetryIt.RetryDefinitionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.OnFailure(System.Action{`0,System.Exception})">
+            <summary>
+            Runs the specified action if all attempts fail.
+            </summary>
+            <param name="failureAction">Code to run.</param>
+            <returns>Returns this instance of <see cref="T:FAuresco.RetryIt.RetryDefinitionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.BeforeRetry(System.Action)">
+            <summary>
+            Runs the specified action before each retry.
+            </summary>
+            <param name="beforeRetryAction">Code to run.</param>
+            <returns>Returns this instance of <see cref="T:FAuresco.RetryIt.RetryDefinitionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.AfterRetry(System.Action{`0,System.Exception})">
+            <summary>
+            Runs the specified action after each retry.
+            </summary>
+            <param name="afterRetryAction">Code to run.</param>
+            <returns>Returns this instance of <see cref="T:FAuresco.RetryIt.RetryDefinitionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.IgnoreFailure">
+            <summary>
+            When and all attempts fail, does not throw the last exception and instead returns the default value for the result type.
+            </summary>
+            <returns>Returns this instance of <see cref="T:FAuresco.RetryIt.RetryDefinitionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.IgnoreFailure(`0)">
+            <summary>
+            When and all attempts fail, does not throw the last exception and instead returns the specified value.
+            </summary>
+            <returns>Returns this instance of <see cref="T:FAuresco.RetryIt.RetryDefinitionBuilder`1"/>.</returns>
+        </member>
+        <member name="M:FAuresco.RetryIt.RetryDefinitionBuilder`1.Go">
+            <summary>
+            Executes the function and applies the retry logic, if necessary.
+            </summary>
+            <returns>The result of the function.</returns>
+            <remarks>If the function fails in all retries, the last exception or the last result will be outputed.</remarks>
+        </member>
+        <member name="T:FAuresco.RetryIt.Strategies.CustomRetryStrategy`1">
+            <summary>
+            Strategy that allows retry when a provided custom function returns true.
+            </summary>
+            <typeparam name="TResult">Type of the result.</typeparam>
+        </member>
+        <member name="M:FAuresco.RetryIt.Strategies.CustomRetryStrategy`1.#ctor(System.Func{`0,System.Exception,System.Boolean})">
+            <summary>
+            Strategy that allows retry when a provided custom function returns true. 
+            </summary>
+            <param name="customFunction">A function that receives the result value of the original function and the exception in case one was thrown and outputs true or false indicating the executor should retry or not.</param>
+        </member>
+        <member name="M:FAuresco.RetryIt.Strategies.CustomRetryStrategy`1.MustRetry(`0,System.Exception)">
+            <summary>
+            Runs retry strategy and tells the executor if it must retry or not.
+            </summary>
+            <typeparam name="TResult">The type of the result.</typeparam>
+            <param name="result">The result of the function/code.</param>
+            <param name="ex">The exception in case of any errors.</param>
+            <returns>True if the executor must retry.</returns>
+        </member>
+        <member name="T:FAuresco.RetryIt.Strategies.ExceptionMessageContainsRetryStrategy`1">
+            <summary>
+            Strategy that allows retry when specific message is found int the exception message or in the exception message of the inner exceptions (recursive search).
+            </summary>
+            <typeparam name="TResult">Type of the result.</typeparam>
+        </member>
+        <member name="M:FAuresco.RetryIt.Strategies.ExceptionMessageContainsRetryStrategy`1.#ctor(System.String)">
+            <summary>
+            Strategy that allows retry when specific message is found int the exception message or in the exception message of the inner exceptions (recursive search).
+            </summary>
+            <param name="message">The message to be searched in the exception message.</param>
+        </member>
+        <member name="M:FAuresco.RetryIt.Strategies.ExceptionMessageContainsRetryStrategy`1.MustRetry(`0,System.Exception)">
+            <summary>
+            Runs retry strategy and tells the executor if it must retry or not.
+            </summary>
+            <typeparam name="TResult">The type of the result.</typeparam>
+            <param name="result">The result of the function/code.</param>
+            <param name="ex">The exception in case of any errors.</param>
+            <returns>True if the executor must retry.</returns>
+        </member>
+        <member name="T:FAuresco.RetryIt.Strategies.ExceptionTypeRetryStrategy`1">
+            <summary>
+            Strategy that allows retry when specific exception type is thrown.
+            </summary>
+            <typeparam name="TResult">Type of the result.</typeparam>
+        </member>
+        <member name="M:FAuresco.RetryIt.Strategies.ExceptionTypeRetryStrategy`1.#ctor(System.Type)">
+            <summary>
+            Strategy that allows retry when specific exception type is thrown.
+            </summary>
+            <param name="exceptionType">Type of the exception.</param>
+        </member>
+        <member name="M:FAuresco.RetryIt.Strategies.ExceptionTypeRetryStrategy`1.MustRetry(`0,System.Exception)">
+            <summary>
+            Runs retry strategy and tells the executor if it must retry or not.
+            </summary>
+            <typeparam name="TResult">The type of the result.</typeparam>
+            <param name="result">The result of the function/code.</param>
+            <param name="ex">The exception in case of any errors.</param>
+            <returns>True if the executor must retry.</returns>
+        </member>
+    </members>
+</doc>
