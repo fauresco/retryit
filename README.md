@@ -11,7 +11,9 @@ Using Nuget:
     
 ## Using
 
-Usually you want to retry your code when something happens:
+### Basic Sample
+
+Usually you want to retry your code when something happens for a few times:
 
 ```cs
 Retry.It(data = SomeRepository.FetchData())
