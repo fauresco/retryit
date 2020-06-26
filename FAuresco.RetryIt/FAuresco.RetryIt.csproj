@@ -17,6 +17,8 @@
 
   <PropertyGroup>
     <DocumentationFile>D:\Github\RetryIt\FAuresco.RetryIt\FAuresco.RetryIt.xml</DocumentationFile>
+    <Version>1.0.1</Version>
+    <PackageReleaseNotes>Bugfix: must throw the exception when the exception did not match any retry strategy instead of returning default value</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
