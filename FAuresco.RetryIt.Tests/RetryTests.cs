@@ -263,6 +263,31 @@ namespace FAuresco.RetryIt.Tests
         }
 
         [TestMethod]
+        public void Retry_throws_exception()
+        {
+            var repo = Mock.Of<ISomeDataRepository>();
+            var data = new SomeData() { Id = 10, Name = "Fernando" };
+
+            Mock.Get(repo).Setup(r => r.SaveSomeData(It.IsAny<SomeData>())).Callback(() => {
+                throw new ApplicationException("Shit!");
+            });
+
+            try
+            {
+                Retry.It(() => repo.SaveSomeData(data))
+                     .WhenExceptionMessageContains("timeout") // exception is "Shit!", will not retry
+                     .Times(3)
+                     .Go();
+
+                Assert.Fail("Did not throw exception!");
+            }
+            catch (ApplicationException ex)
+            {
+                Assert.AreEqual("Shit!", ex.Message);
+            }
+        }
+
+        [TestMethod]
         public void Retry_executes_action_when_all_attempts_fail()
         {
             var repo = Mock.Of<ISomeDataRepository>();

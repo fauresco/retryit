@@ -202,7 +202,10 @@ namespace FAuresco.RetryIt
                 }
                 else
                 {
-                    success = true;
+                    if(exception == null)
+                    {
+                        success = true;
+                    }
                 }
 
             } while (retry);
